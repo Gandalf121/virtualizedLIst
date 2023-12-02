@@ -1,24 +1,41 @@
-import logo from './logo.svg';
+import {getUniversity} from "./axios/request"
 import './App.css';
+import { useState } from "react";
+import { FixedSizeList as List } from 'react-window';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+  const [value, setValue]=useState([])
+
+  getUniversity().then((res)=>{
+    setValue(res.data)
+    console.log(res)
+  }).catch((err)=>{
+    console.log(err)
+  })
+  
+  const items = value; // some list of items
+
+  const Row = ({ index, style }) => (
+    <div style={style}>
+       Row {items[index].country}
     </div>
+  );
+
+
+  return (
+    <>
+    <List
+    height={300}
+    width={1080}
+    itemSize={120}
+    itemCount={items.length}
+    style={{backgroundColor:"black",color:"#ffff"}}
+  >
+    {Row}
+  </List>
+
+    </>
   );
 }
 
